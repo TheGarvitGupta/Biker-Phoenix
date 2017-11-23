@@ -6,5 +6,4 @@ var connection = mysql.createConnection({
   database	: 'dummy'
   port		: '8000'
 });
-
 console.log(connection);
