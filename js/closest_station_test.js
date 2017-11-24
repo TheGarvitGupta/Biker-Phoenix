@@ -1,6 +1,11 @@
+function httpGet(url) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", url, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
 
-
-var address1 = prompt("Enter the address:", "Penn Station");
+var address1 = prompt("Enter the address:", "UPenn");
 
 function find_closest_subway_station(address){
 	
@@ -8,12 +13,9 @@ function find_closest_subway_station(address){
 	latitude = response[0]
 	longitude = response[1]
 
-	console.log(latitude);
-
-	var url = "/closestSubway/:" + latitude + "/:" + longitude;
+	var url = "../closestSubway/" + latitude + "/" + longitude;
     response2 = httpGet(url);
-
-    console.log(response2);
+    response2 = eval(response2)[0];
 
 	var subway_station_id = response2.id;
 	var subway_station_latitude = response2.latitude;
@@ -22,6 +24,10 @@ function find_closest_subway_station(address){
 	//calculate walking time to address of the station found
 	var subway_station_address = reverse_geocoding(subway_station_latitude,subway_station_longitude);
 	var walking_time = get_walk_time(address,subway_station_address);
+
+	alert("Subway Station Address: " + subway_station_address);
+	alert("Walking Time: " + walking_time);
+
 	return [subway_station_id, walking_time];
 }
 
@@ -57,10 +63,8 @@ function get_walk_time(address1,address2){
 		var url_string = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+address1+"&destinations="+address2+"&mode="+mode+"&key=AIzaSyCI7fCvGW2y8fVb8SzohlAzFAhDZ0eJGsI";
 	}
 
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.open( "GET", url_string, false ); // false for synchronous request
-	xmlHttp.send(null);
-	var data = JSON.parse(xmlHttp.responseText);
+	var data = httpGet(url_string);
+	var data = eval(JSON.parse(data));
 	
 	var time_seconds = data.rows[0].elements[0].duration.value;
 	var time_minutes = parseFloat(time_seconds)/60; //time in minutes
