@@ -38,7 +38,6 @@ app.get('/bestPath/:longitude/:latitude', function(req, res) {
 			res.send(rows);
 		}
 	});
-
 })
 
 app.listen(app.get('port'), function() {
