@@ -102,19 +102,22 @@
         </nav>
       </div>
       <main class="mdl-layout__content mdl-color--grey-100">
-        <div ng-app="directions" ng-controller="directionsController" class="mdl-grid demo-content">
+        <div ng-app="subway-stations" ng-controller="allSubways" class="mdl-grid demo-content">
           <div class="mdl-cell ">
             <div class="mdl-color--white mdl-shadow--2dp input-boxes">
-              <input ng-model="source" type="text" placeholder="Source" class="source-box location-input">
+              <input ng-change="search()" ng-model="name" type="text" placeholder="Location" class="source-box location-input">
             </div>
-            <div class="mdl-color--white mdl-shadow--2dp input-boxes">
-              <input ng-model="destination" type="text" placeholder="Destination" class="destination-box location-input">
-            </div>
-            <div class="submit-button mdl-shadow--2dp" ng-href='#here' ng-click='search()'>Search</div>
           </div>
           <div class="mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col mdl-layout-title headline">
-            <div class="heading-directions">Map</div>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d12234.493441118017!2d-75.20705305!3d39.9498137!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1511501836555" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+            <div class="heading-directions">Subway Stations</div>
+            <div ng-repeat="x in matches | orderBy : 'stationName'" class="mode-transport clearfix">
+              <div class="mode-icon-subway"></div>
+              <div class="mode-text-direction">{{ x.name }}</div>
+              <div class="mode-stats-distime">
+                <div class="time-taken">{{ x.latitude + ' miles away'}}</div> 
+                <div class="distance">{{ x.lines }} lines available</div>
+              </div>
+            </div>
           </div>
           </div>
         </div>

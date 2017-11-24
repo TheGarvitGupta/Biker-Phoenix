@@ -27,6 +27,48 @@ app.get('/map', function(req, res, next) {
 	res.sendFile(path.join(__dirname, '/view', 'map.html'));
 });
 
+app.get('/history', function(req, res, next) {
+	res.sendFile(path.join(__dirname, '/view', 'history.html'));
+});
+
+app.get('/bike-stations', function(req, res, next) {
+	res.sendFile(path.join(__dirname, '/view', 'bike-stations.html'));
+});
+
+app.get('/subway-stations', function(req, res, next) {
+	res.sendFile(path.join(__dirname, '/view', 'subway-stations.html'));
+});
+
+app.get('/all-bikes/:location', function(req, res) {
+
+	var query = "SELECT * FROM bike_stations WHERE stationName LIKE '%" + req.params.location + "%'";
+	console.log(query);
+
+	connection.query(query, function(err, rows, fields) {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			res.send(rows);
+		}
+	});
+});
+
+app.get('/all-subways/:location', function(req, res) {
+
+	var query = "SELECT * FROM subway_stations WHERE name LIKE '%" + req.params.location + "%'";
+	console.log(query);
+
+	connection.query(query, function(err, rows, fields) {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			res.send(rows);
+		}
+	});
+});
+
 app.get('/bestPath/:longitude/:latitude', function(req, res) {
 
 	console.log("/bestPath/:" + req.params.longitude + "/:" + req.params.latitude);
