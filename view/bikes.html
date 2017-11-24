@@ -113,15 +113,8 @@
             <div class="submit-button mdl-shadow--2dp" ng-href='#here' ng-click='search()'>Search</div>
           </div>
           <div class="mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col mdl-layout-title headline">
-            <div class="heading-directions">Directions</div>
-            <div ng-repeat="x in path" class="mode-transport clearfix">
-              <div class="mode-icon-subway"></div>
-              <div class="mode-text-direction">{{ x.latitude + ', ' + x.longitude + ', ' + stationName}}</div>
-              <div class="mode-stats-distime">
-                <div class="time-taken">{{ x.totalDocks + ' min'}}</div> 
-                <div class="distance">4.1 miles</div>
-              </div>
-            </div>
+            <div class="heading-directions">Map</div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d12234.493441118017!2d-75.20705305!3d39.9498137!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1511501836555" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
           </div>
           </div>
         </div>

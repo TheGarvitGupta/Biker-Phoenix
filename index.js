@@ -23,6 +23,10 @@ app.get('/', function(req, res, next) {
 	res.sendFile(path.join(__dirname, '/', 'index.html'));
 });
 
+app.get('/map', function(req, res, next) {
+	res.sendFile(path.join(__dirname, '/view', 'map.html'));
+});
+
 app.get('/bestPath/:longitude/:latitude', function(req, res) {
 
 	console.log("/bestPath/:" + req.params.longitude + "/:" + req.params.latitude);
