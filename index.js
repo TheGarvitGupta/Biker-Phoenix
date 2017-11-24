@@ -19,10 +19,9 @@ var connection = mysql.createConnection({
 app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 
-app.get('/', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '/', 'index.html'));
-});
-
+app.get('/bestPath/:longitude/:latitude', function (req, res) {
+  res.send('hello world')
+})
 // app.get('/', function(request, response) {
 
 //   var query = "SELECT * FROM bike_stations"
