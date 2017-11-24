@@ -44,3 +44,24 @@ app.get('/bestPath/:longitude/:latitude', function(req, res) {
 app.listen(app.get('port'), function() {
 	console.log("Node app is running at localhost:" + app.get('port'))
 })
+
+function find_closest_subway_station(source_latitude, source_longitude){
+	var query = 'SELECT s.id, s.longitude, s.latitude FROM subway_stations s ORDER BY  POWER((s.longitude -(' + source_longitude +')),2)+POWER((s.latitude - (' + source_latitude + ')),2) ASC LIMIT 1';
+	console.log(query);
+  	id, lat, long=connection.query(query);
+  	return id, lat, long;
+    } 
+
+function find_closest_bike_station(source_latitude, source_longitude){
+	var query = 'SELECT b.bike_station_id, b.longitude, b.latitude FROM bike_stations b ORDER BY  POWER((b.longitude -('+ source_longitude +')),2)+POWER((b.latitude - (' + source_latitude +')),2) ASC LIMIT 1';
+	console.log(query);
+  	id, lat, long=connection.query(query);
+  	return id, lat, long;
+    }
+
+function find_closest_subway_station(source_latitude, source_longitude){
+	var query = 'SELECT bike_station_id, distance FROM subway_bike_shortest_distances WHERE subway_station_id ="'+subway_station_id +'"';
+	console.log(query);
+	id, distance=connection.query(query);
+	return id, distance; 
+    }
