@@ -1,5 +1,9 @@
 var express = require('express')
 var app = express()
+var path = require('path');
+app.use("/styles", express.static(__dirname + '/styles'));
+app.use("/images", express.static(__dirname + '/images'));
+app.use("/js", express.static(__dirname + '/js'));
 
 /* Connection Here */
 var mysql = require('mysql');
@@ -11,24 +15,25 @@ var connection = mysql.createConnection({
   port		: '8000'
 });
 
-console.log(connection);
-
 app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 
-app.get('/', function(request, response) {
-  /* response.send('Hello World!') */
+app.get('/', function(req, res, next) {
+  res.sendFile(path.join(__dirname, '/', 'index.html'));
+});
 
-  var query = "SELECT * FROM bike_stations"
-  console.log(query);
+// app.get('/', function(request, response) {
 
-	connection.query(query, function(err, rows, fields) {
-		if (err) console.log(err);
-			else {
-			response.send(rows);
-		}  
-	});
-})
+//   var query = "SELECT * FROM bike_stations"
+//   console.log(query);
+
+// 	connection.query(query, function(err, rows, fields) {
+// 		if (err) console.log(err);
+// 			else {
+// 			response.send(rows);
+// 		}  
+// 	});
+// })
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
