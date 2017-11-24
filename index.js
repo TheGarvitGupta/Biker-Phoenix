@@ -9,36 +9,38 @@ app.use("/controllers", express.static(__dirname + '/controllers'));
 /* Connection Here */
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-  host		: 'biker.c09mjnvqwegg.us-east-1.rds.amazonaws.com',
-  user		: 'admin',
-  password	: '1qaz2wsx',
-  database	: 'dummy',
-  port		: '8000'
+	host: 'biker.c09mjnvqwegg.us-east-1.rds.amazonaws.com',
+	user: 'admin',
+	password: '1qaz2wsx',
+	database: 'dummy',
+	port: '8000'
 });
 
 app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(req, res, next) {
-  res.sendFile(path.join(__dirname, '/', 'index.html'));
+	res.sendFile(path.join(__dirname, '/', 'index.html'));
 });
 
-app.get('/bestPath/:longitude/:latitude', function (req, res) {
-  res.send('hello world')
+app.get('/bestPath/:longitude/:latitude', function(req, res) {
+
+	console.log("/bestPath/:" + req.params.longitude + "/:" + req.params.latitude);
+
+	var query = "SELECT * FROM bike_stations";
+	console.log(query);
+
+	connection.query(query, function(err, rows, fields) {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			res.send(rows);
+		}
+	});
+
 })
-// app.get('/', function(request, response) {
-
-//   var query = "SELECT * FROM bike_stations"
-//   console.log(query);
-
-// 	connection.query(query, function(err, rows, fields) {
-// 		if (err) console.log(err);
-// 			else {
-// 			response.send(rows);
-// 		}  
-// 	});
-// })
 
 app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'))
+	console.log("Node app is running at localhost:" + app.get('port'))
 })
