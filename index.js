@@ -70,6 +70,13 @@ app.get('/closestBike/:latitude/:longitude', function(req, res) {
 	});
 });
 
+function find_closest_bike_to_subway(int subway_station_id){
+	var query = 'SELECT bike_station_id, distance FROM subway_bike_shortest_distances WHERE subway_station_id ="'+subway_station_id +'"';
+	console.log(query);
+	id, distance=connection.query(query);
+	return id, distance; 
+    }
+    
 app.listen(app.get('port'), function() {
 	console.log("Node app is running at localhost:" + app.get('port'))
 });
