@@ -1,4 +1,9 @@
-
+function httpGet(url) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", url, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
 
 var address1 = prompt("Enter the address:", "Penn Station");
 var address2 = prompt("Enter the address:", "Union Square");
@@ -62,10 +67,15 @@ function reverse_geocoding(latitude,longitude){
 function find_closest_subway_station(address){
 	
 	var latitude, var longitude = geocoding(address);
-	//here goes SQL query that returns closes bike_station_id, its latitude and longitude
-	var subway_station_id = 22;
-	var subway_station_latitude = 40.833769;
-	var subway_station_longitude = -73.918432;
+
+	var url = "/closestSubway/:" + latitude + "/:" + longitude;
+    response = httpGet(url);
+
+    console.log(response);
+
+	var subway_station_id = response.id;
+	var subway_station_latitude = response.latitude;
+	var subway_station_longitude = response.longitude;
 
 	//calculate walking time to address of the station found
 	var subway_station_address = reverse_geocoding(subway_station_latitude,subway_station_longitude);
