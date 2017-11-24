@@ -102,23 +102,23 @@
         </nav>
       </div>
       <main class="mdl-layout__content mdl-color--grey-100">
-        <div class="mdl-grid demo-content">
+        <div ng-app="directions" ng-controller="directionsController" class="mdl-grid demo-content">
           <div class="mdl-cell ">
             <div class="mdl-color--white mdl-shadow--2dp input-boxes">
-              <input type="text" placeholder="Source" class="source-box location-input">
+              <input ng-model="source" type="text" placeholder="Source" class="source-box location-input">
             </div>
             <div class="mdl-color--white mdl-shadow--2dp input-boxes">
-              <input type="text" placeholder="Destination" class="destination-box location-input">
+              <input ng-model="destination" type="text" placeholder="Destination" class="destination-box location-input">
             </div>
-            <div class="submit-button mdl-shadow--2dp">Search</div>
+            <div class="submit-button mdl-shadow--2dp" ng-href='#here' ng-click='search()'>Search</div>
           </div>
-          <div ng-app="directions" ng-controller="directionsController" class="mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col mdl-layout-title headline">
+          <div class="mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col mdl-layout-title headline">
             <div class="heading-directions">Directions</div>
             <div ng-repeat="x in path" class="mode-transport clearfix">
               <div class="mode-icon-subway"></div>
-              <div class="mode-text-direction">towards 44th and Walnut Street, Philadelphia, PA</div>
+              <div class="mode-text-direction">{{ x.latitude + ', ' + x.longitude + ', ' + stationName}}</div>
               <div class="mode-stats-distime">
-                <div class="time-taken">33 min</div> 
+                <div class="time-taken">{{ x.totalDocks + ' min'}}</div> 
                 <div class="distance">4.1 miles</div>
               </div>
             </div>
