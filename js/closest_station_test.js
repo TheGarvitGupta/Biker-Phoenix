@@ -13,7 +13,7 @@ function find_closest_subway_station(address){
 	latitude = response[0]
 	longitude = response[1]
 
-	var url = "../closestSubway/" + latitude + "/" + longitude;
+	var url = "/closestSubway/" + latitude + "/" + longitude;
     response2 = httpGet(url);
     response2 = eval(response2)[0];
 
