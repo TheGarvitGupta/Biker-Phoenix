@@ -118,7 +118,11 @@ app.get('/closestBike/:latitude/:longitude', function(req, res) {
 
 app.get('/closestBikeToSubway/:subway_id', function(req, res) {
 
-	var query = 'SELECT bike_station_id, distance FROM subway_bike_shortest_distances WHERE subway_station_id ="'+ req.params.subway_id +'"';
+	var query = 'SELECT b.bike_station_id, s.id, b.latitude as blat, b.longitude as blong, s.latitude as slat, s.longitude as slong FROM bike_stations b, subway_stations s WHERE b.bike_station_id = (SELECT bike_station_id FROM subway_bike_shortest_distances WHERE subway_station_id ="'+req.params.subway_id+'") AND s.id = "'+req.params.subway_id+'"';
+
+	//var query = 'SELECT bike_station_id, latitude, longitude FROM bike_stations WHERE bike_station_id = (SELECT bike_station_id FROM subway_bike_shortest_distances WHERE subway_station_id = "'+req.params.subway_id+'")';
+
+	//var query = 'SELECT bike_station_id, distance FROM subway_bike_shortest_distances WHERE subway_station_id ="'+ req.params.subway_id +'"';
 	console.log(query);
 
 	connection.query(query, function(err, rows, fields) {
