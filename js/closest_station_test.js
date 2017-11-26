@@ -1,8 +1,25 @@
+function index_of_min(array) {
+    var index = 0;
+	var value = array[0];
+	for (var i = 1; i < array.length; i++) {
+	  if (array[i] < value) {
+	    value = array[i];
+	    index = i;
+	  }
+	}
+	return index;
+}
+
 function httpGet(url) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "GET", url, false ); // false for synchronous request
     xmlHttp.send( null );
     return xmlHttp.responseText;
+}
+
+function update_address(address){
+    address=address.replace(" ","+");
+    return address;
 }
 
 function find_closest_subway_station(address){
@@ -27,6 +44,8 @@ function find_closest_subway_station(address){
 }
 
 function find_closest_bike_station(address){
+
+	address = update_address(address);
 
 	response = geocoding(address);
 
@@ -75,6 +94,7 @@ function find_closest_bike_to_subway(subway_station_id){
 }
 
 function geocoding(address){
+	address = update_address(address);
 	var url_string = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyD0y1Q1FGLwHEkqjPHrNeodwGCf3VRZYlA";
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.open( "GET", url_string, false ); // false for synchronous request
@@ -97,6 +117,9 @@ function reverse_geocoding(latitude,longitude){
 
 function get_walk_time(address1,address2){
 
+	address1 = update_address(address1);
+	address2 = update_address(address2);
+
 	var mode = "walking"
 
 	if (address1 == null || address1 == "" || address2 == null || address2 == "") {
@@ -118,6 +141,9 @@ function get_walk_time(address1,address2){
 
 function get_bike_time(address1,address2){
 
+	address1 = update_address(address1);
+	address2 = update_address(address2);
+
 	var mode = "bicycling"
 
 	if (address1 == null || address1 == "" || address2 == null || address2 == "") {
@@ -138,6 +164,9 @@ function get_bike_time(address1,address2){
 }
 
 function get_subway_time(address1,address2){
+
+	address1 = update_address(address1);
+	address2 = update_address(address2);
 
 	var mode = "transit&transit_mode=subway"
 
@@ -161,8 +190,10 @@ function get_subway_time(address1,address2){
 
 
 
-function get_best_path(address1,address2){
+function get_best_path(address_1,address_2){
 
+	address1 = update_address(address_1);
+	address2 = update_address(address_2);
 
 	time_walk_only = get_walk_time(address1,address2);
 
@@ -224,33 +255,46 @@ function get_best_path(address1,address2){
 
 	bike_time_end = get_bike_time(near_bike_station_end_address,bike_near_subway_end_address);
 
-	alert("24");
-
 
 	//NOW WE COMPUTE THE TRAVEL TIME FOR EACH MODE
 
-	var total_time_walk = time_walk_only;
+	total_time_walk = time_walk_only;
+	walk_stops_addresses = []
 
-	var total_time_bike = near_bike_start_walktime + bike_time + near_bike_end_walktime;
+	total_time_bike = near_bike_start_walktime + bike_time + near_bike_end_walktime;
+	bike_stops_addresses = [near_bike_station_start_address, near_bike_station_end_address]
 
-	var total_time_subway = near_subway_start_walktime + subway_time + near_subway_end_walktime;
+	total_time_subway = near_subway_start_walktime + subway_time + near_subway_end_walktime;
+	subway_stops_addresses = [near_subway_station_start_address, near_subway_station_end_address]
 
-	var total_time_bike_subway = near_bike_start_walktime + bike_time_start + walk_from_bike_to_subway + subway_time + near_subway_end_walktime;
+	total_time_bike_subway = near_bike_start_walktime + bike_time_start + walk_from_bike_to_subway + subway_time + near_subway_end_walktime;
+	bike_subway_stops_addresses = [near_bike_station_start_address, bike_near_subway_start_address, near_subway_station_start_address, near_subway_station_end_address]
 
-	var total_time_subway_bike = near_subway_start_walktime + subway_time + walk_from_subway_to_bike + bike_time_end + near_bike_end_walktime;
+	total_time_subway_bike = near_subway_start_walktime + subway_time + walk_from_subway_to_bike + bike_time_end + near_bike_end_walktime;
+	subway_bike_stops_addresses = [near_subway_station_start_address, near_subway_station_end_address, bike_near_subway_end_address, near_bike_station_end_address]
 
-	var total_time_bike_subway_bike = near_bike_start_walktime + bike_time_start + walk_from_bike_to_subway + subway_time + walk_from_subway_to_bike + bike_time_end + near_bike_end_walktime;
+	total_time_bike_subway_bike = near_bike_start_walktime + bike_time_start + walk_from_bike_to_subway + subway_time + walk_from_subway_to_bike + bike_time_end + near_bike_end_walktime;
+	bike_subway_bike_stops_addresses = [near_bike_station_start_address, bike_near_subway_start_address, near_subway_station_start_address, near_subway_station_end_address, bike_near_subway_end_address, near_bike_station_end_address]
 
-	walk_instructions = "Just walk the entire way"
-	bike_instructions = "Walk to the bike station in "+near_bike_station_start_address+", then bike to the bike station in "+near_bike_station_end_address+"and then walk to your destination"
 
-	return [bike_instructions,total_time_bike];
+	times = [total_time_walk, total_time_bike, total_time_subway, total_time_bike_subway, total_time_subway_bike, total_time_bike_subway_bike];
+	modes = ["Walk", "Bike", "Subway", "Bike and Subway", "Subway and Bike", "Bike, Subway and Bike"];
+	all_stops = [walk_stops_addresses, bike_stops_addresses, subway_stops_addresses, bike_subway_stops_addresses, subway_bike_stops_addresses, bike_subway_bike_stops_addresses]
 
+	index = index_of_min(times);
+
+	mode = modes[index];
+	time = times[index];
+	stops = all_stops[index];
+
+	output = [mode, time, stops];
+
+	return output;
 
 }
 
-var address1 = prompt("Enter the address:", "Grand+Central+Station+NY");
-var address2 = prompt("Enter the address:", "Hotel+Chantelle+NY");
+var address1 = prompt("Enter the address:", "Grand Central Station");
+var address2 = prompt("Enter the address:", "Hotel Chantelle");
 
 if (address1 == null || address1 == "" || address2 == null || address2 == "") {
 	alert("User cancelled the prompt");
@@ -258,8 +302,6 @@ if (address1 == null || address1 == "" || address2 == null || address2 == "") {
 
 else {
 	response = get_best_path(address1,address2);
-	instructions = response[0];
-	time = response[1];
 }
 
 
@@ -269,7 +311,8 @@ else {
 //var data1 = station_id;
 // var data2 = walking_time;
 
-alert(instructions);
-alert("Total time"+time);
+alert(response[0]);
+alert(response[1]);
+alert(response[2]);
 
 
