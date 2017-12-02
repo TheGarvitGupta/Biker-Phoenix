@@ -1,9 +1,8 @@
-// TEST PARAMS
-// google.maps.event.addDomListener(window, "load", initMap(center_lat,center_lng));
-	
-// Global variables
 
 // the information of different markers routes = [A,B,mode] 
+// the route at most walk -> bike -> walk -> sub -> walk -> bike -> walk
+// example mode should be WALKING1, WALKING2, WALKING3, BIKING1 etc...
+
 // loc_to_coord = place -> lat,lng 'New York University' -> 1.234, 2.345
 // locations -> the intermediate points ['New York University','Oscar Health'...]
 // map_opt -> mapping mode to its belong display structure, which contains mode, directions service, pathline option  
@@ -17,6 +16,12 @@ var map;
 
 // unused
 var infowindow;
+
+// Constant param, the walking mode nubmer, walking1, walking2, walking3, walking4
+var w_mode_num = 4;
+var b_mode_num = 2;
+var s_mode_num = 1;
+
 
 // initialize the map function
 function initMap() {
@@ -32,46 +37,55 @@ function initMap() {
 	// ];
 
 	// Set the walking route line - shallow-blue
-  	var pathLine_w_1 = new google.maps.Polyline({
+	// initialize the walking display object 
+  	var pathLine_w = [];
+  	var dir_ser_w = []; 
+	for (var i = 0; i < w_mode_num; i++){
+		pathLine_w.push(new google.maps.Polyline({
   		strokeColor: '#00ff00'
-  	});
-  	var pathLine_w_2 = new google.maps.Polyline({
-  		strokeColor: '#00ff00'
-  	});
+  		}));		
+  		dir_ser_w.push(new google.maps.DirectionsService());
+	}  	
 
   	// Set the biking route line - red
-  	var pathLine_b_1 = new google.maps.Polyline({
+	// initialize the biking display object 
+  	var pathLine_b = [];
+  	var dis_ser_b = [];
+  	for (var i = 0; i < b_mode_num; i++){
+  		pathLine_b.push(new google.maps.Polyline({
   		strokeColor: '#FF0000'
-  	});
-
-  	// Set the biking route line - red
-  	var pathLine_b_2 = new google.maps.Polyline({
-  		strokeColor: '#FF0000'
-  	});
+  		}));
+  		dis_ser_b.push(new google.maps.DirectionsService());
+  	}
 
   	// Set the subway route line - deep-blue
-  	var pathLine_s = new google.maps.Polyline({
+  	// initialize the subway display object
+  	var pathLine_s = [];
+  	var dir_ser_s = [];
+  	for (var i = 0; i < s_mode_num; i++){
+  		pathLine_s.push(new google.maps.Polyline({
   		strokeColor: '#0000ff'
-  	});
+  		}));
+	  	dir_ser_s.push(new google.maps.DirectionsService());	
+  	}
+ 
+  	var walk_objs = [];
+  	var bike_objs = [];
+  	var sub_objs = [];
+  	for (var i = 0; i < w_mode_num; i++){
+  		walk_objs.push({mode: 'WALKING',dir_ser: dir_ser_w[i], path_line: pathLine_w[i]})
+  		map_opt.set('WALKING'+(i+1),walk_objs[i]);
+  	}
+ 	for (var i = 0; i < b_mode_num; i++){
+  		bike_objs.push({mode: 'BICYCLING',dir_ser: dis_ser_b[i], path_line: pathLine_b[i]})
+  		map_opt.set('BIKING'+(i+1),bike_objs[i]);
 
-  	// initialize the display object
-  	var dir_ser_w_1 = new google.maps.DirectionsService();
-  	var dir_ser_w_2 = new google.maps.DirectionsService();
-  	var dir_ser_b_1 = new google.maps.DirectionsService();
-  	var dir_ser_b_2 = new google.maps.DirectionsService();
-  	var dir_ser_s = new google.maps.DirectionsService();
+  	}
+ 	for (var i = 0; i < s_mode_num; i++){
+  		sub_objs.push({mode: 'TRANSIT',dir_ser: dir_ser_s[i], path_line: pathLine_s[i]})
+  		map_opt.set('SUBWAY'+(i+1),sub_objs[i]);
 
-  	var walk_obj_1 = {mode: 'WALKING',dir_ser: dir_ser_w_1, path_line: pathLine_w_1};
-  	var walk_obj_2 = {mode: 'WALKING',dir_ser: dir_ser_w_2, path_line: pathLine_w_2};
-  	var bike_obj_1 = {mode: 'BICYCLING',dir_ser: dir_ser_b_1, path_line: pathLine_b_1};
-  	var bike_obj_2 = {mode: 'BICYCLING',dir_ser: dir_ser_b_2, path_line: pathLine_b_2};
-  	var sub_obj = {mode: 'TRANSIT',dir_ser: dir_ser_s, path_line: pathLine_s};
-  	
-  	map_opt.set('WALKING1',walk_obj_1);
-  	map_opt.set('WALKING2',walk_obj_2);
-  	map_opt.set('BIKING1',bike_obj_1);
-  	map_opt.set('BIKING2',bike_obj_2);
-  	map_opt.set('SUBWAY',sub_obj);
+  	}
 
 	
 	// add the map the set the map options
@@ -182,6 +196,7 @@ function draw_path(start,end,mode){
 
 	// choose the correct display object
 	var obj = map_opt.get(mode);
+	console.log(obj);
 	var direction_serive = obj.dir_ser;
 	var path_line = obj.path_line;
 
