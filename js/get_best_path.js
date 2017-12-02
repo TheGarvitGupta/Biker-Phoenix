@@ -302,7 +302,7 @@ function get_best_path(address_1,address_2){
 
 	times = [total_time_walk, total_time_bike, total_time_subway, total_time_bike_subway, total_time_subway_bike, total_time_bike_subway_bike];
 	modes = ["Walk", "Bike", "Subway", "Bike and Subway", "Subway and Bike", "Bike, Subway and Bike"];
-	all_stops = [walk_stops_addresses, bike_stops_addresses, subway_stops_addresses, bike_subway_stops_addresses, subway_bike_stops_addresses, bike_subway_bike_stops_addresses]
+	all_stops = [walk_stops_addresses, bike_stops_addresses, subway_stops_addresses, bike_subway_stops_addresses, subway_bike_stops_addresses, bike_subway_bike_stops_addresses];
 
 	index = index_of_min(times);
 

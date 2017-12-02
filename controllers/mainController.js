@@ -6,9 +6,24 @@ app.controller('directionsController', function($scope, $http) {
 	$scope.search = function() {
 		
 		// Call Nacho's function here and store the response in a variable called 'data'
-		var data = JSON.stringify(get_best_path($scope.source,$scope.destination));
-		$scope.path = data;
-		console.log(data);
+		var data = get_best_path($scope.source,$scope.destination);
+		//jsonMake = JSON.stringify(data);
+		jsonMake = data;
+
+		var row = "[";
+
+		for (var i=0; i<jsonMake[2].length; i++) {
+			var row = row + "{\"start\": \"" +  jsonMake[2][i][0] + "\", \"end\": \"" + jsonMake[2][i][1] + "\", \"mode\": \"" + jsonMake[2][i][2] + "\", \"time\":" + jsonMake[2][i][3].toFixed(2) + "},";
+		}
+
+		row = row.substring(0, row.length-1);
+		var row = row + "]"
+
+		jsonObject = JSON.parse(row);
+
+		$scope.path = jsonObject;
+
+		console.log(jsonObject);
 	}
 
 	/* Set Defaults */

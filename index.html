@@ -117,9 +117,12 @@
             <div class="heading-directions">Directions</div>
             <div ng-repeat="x in path" class="mode-transport clearfix">
               <div class="mode-icon-subway"></div>
-              <div class="mode-text-direction">{{ x.latitude + ', ' + x.longitude + ', ' + stationName}}</div>
+              <div class="mode-text-direction">
+                <div>{{ 'From: ' + x.start }}</div>
+                <div>{{ 'To: ' + x.end }}</div>
+              </div>
               <div class="mode-stats-distime">
-                <div class="time-taken">{{ x.totalDocks + ' min'}}</div> 
+                <div class="time-taken">{{ x.time + ' min'}}</div> 
                 <div class="distance">4.1 miles</div>
               </div>
             </div>
