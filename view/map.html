@@ -22,7 +22,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script type="text/javascript" src="controllers/mainController.js"></script>
+    <script type="text/javascript" src="../controllers/mainController.js"></script>
 
     <script type="text/javascript"></script>
     <title>Bike Phoenix - CIS 550 Project</title>
@@ -114,7 +114,7 @@
           </div>
           <div class="mdl-shadow--2dp mdl-color--white mdl-cell mdl-cell--8-col mdl-layout-title headline">
             <div class="heading-directions">Map</div>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d12234.493441118017!2d-75.20705305!3d39.9498137!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1511501836555" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+            <div id="map"></div>
           </div>
           </div>
         </div>
@@ -168,5 +168,9 @@
         </defs>
       </svg>
     <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script src="../js/map.js"></script>
+    <script 
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByGyX8cPwxqRnxPtTrN1ctGxhpNqJLX5w&callback=initMap"  async defer >
+    </script>
   </body>
 </html>
