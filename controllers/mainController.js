@@ -13,11 +13,13 @@ app.controller('directionsController', function($scope, $http) {
 		var row = "[";
 
 		for (var i=0; i<jsonMake[2].length; i++) {
-			var row = row + "{\"start\": \"" +  jsonMake[2][i][0] + "\", \"end\": \"" + jsonMake[2][i][1] + "\", \"mode\": \"" + jsonMake[2][i][2] + "\", \"time\":" + jsonMake[2][i][3].toFixed(2) + "},";
+			var row = row + "{\"start\": \"" +  jsonMake[2][i][0] + "\", \"end\": \"" + jsonMake[2][i][1] + "\", \"mode\": \"" + jsonMake[2][i][2] + "\", \"time\":" + jsonMake[2][i][3].toFixed(2) + ", \"distance\":" + jsonMake[2][i][4].toFixed(2) + "},";
 		}
 
 		row = row.substring(0, row.length-1);
-		var row = row + "]"
+		var row = row + "]";
+
+		console.log(row);
 
 		jsonObject = JSON.parse(row);
 
