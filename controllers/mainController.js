@@ -1,23 +1,21 @@
+
+
 var app = angular.module('directions', []);
 app.controller('directionsController', function($scope, $http) {
 
 	$scope.search = function() {
-		$http({
-			method: 'GET',
-			url: '/bestPath/' + $scope.source + '/' + $scope.destination
-		}).then(function successCallback(response) {
-			$scope.path = response.data;
-			console.log(response);
-		}, function errorCallback(response) {
-			console.log(response);
-		});
+		
+		// Call Nacho's function here and store the response in a variable called 'data'
+		var data = JSON.stringify(get_best_path($scope.source,$scope.destination));
+		$scope.path = data;
+		console.log(data);
 	}
 
 	/* Set Defaults */
 
-	$scope.source = "Walnut St & S 33rd St";
-	$scope.destination = "Philadelphia Zoo";
-	$scope.search();
+	$scope.source = "Grand Central Station";
+	$scope.destination = "Wythe Hotel";
+	// $scope.search();
 });
 
 var app = angular.module('bike-stations', []);
