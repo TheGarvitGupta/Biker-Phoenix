@@ -343,26 +343,26 @@ function get_best_path(address_1,address_2){
 
 }
 
-var address1 = prompt("Enter the address:", "Grand Central Station");
-var address2 = prompt("Enter the address:", "Hotel Chantelle");
+// var address1 = prompt("Enter the address:", "Grand Central Station");
+// var address2 = prompt("Enter the address:", "Hotel Chantelle");
 
-if (address1 == null || address1 == "" || address2 == null || address2 == "") {
-	alert("User cancelled the prompt");
-}
+// if (address1 == null || address1 == "" || address2 == null || address2 == "") {
+// 	alert("User cancelled the prompt");
+// }
 
-else {
-	response = get_best_path(address1,address2);
-}
+// else {
+// 	response = get_best_path(address1,address2);
+// }
 
 
-//var xmlHttp = new XMLHttpRequest();
-//xmlHttp.open( "GET", url_string, false ); // false for synchronous request
-//xmlHttp.send( null );
-//var data1 = station_id;
+// var xmlHttp = new XMLHttpRequest();
+// xmlHttp.open( "GET", url_string, false ); // false for synchronous request
+// xmlHttp.send( null );
+// var data1 = station_id;
 // var data2 = walking_time;
 
-alert(response[0]);
-alert(response[1]);
-alert(response[2]);
+// alert(response[0]);
+// alert(response[1]);
+// alert(response[2]);
 
 
