@@ -60,12 +60,12 @@
 	background-image: url("../images/bike.svg")
 }
 
-.mode-icon-car {
+.mode-icon-walk {
 	width: 40px;
 	height: 40px;
 	float: left;
 	background-repeat: no-repeat;
-	background-image: url("../images/car.svg")
+	background-image: url("../images/walk.svg")
 }
 
 .mode-icon-subway {
@@ -105,4 +105,61 @@
     content: "";
     clear: both;
     display: table;
+}
+
+.from-block::before {
+	content: "FROM";
+}
+
+.to-block::before {
+	content: "TOWARDS";
+}
+
+.dir-block::before {
+	position: relative;
+	left: 0;
+	color: #333;
+	width: 100px;
+	display: inline-block;
+	font-size: 12px;
+	color: #243239;
+	letter-spacing: 1px;
+}
+
+.totalTime {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	height: 100%;
+	line-height: 76px;
+	right: 24px;
+	font-size: 18px;
+	color: #F5F5F5;
+}
+
+.loader {
+  height: 4px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background-color: #ddd;
+}
+.loader:before{
+  display: block;
+  position: absolute;
+  content: "";
+  left: -200px;
+  width: 200px;
+  height: 4px;
+  background-color: #344750;
+  animation: loading 2s linear infinite;
+}
+
+@keyframes loading {
+    from {left: -200px; width: 30%;}
+    50% {width: 30%;}
+    70% {width: 70%;}
+    80% { left: 50%;}
+    95% {left: 120%;}
+    to {left: 100%;}
 }
