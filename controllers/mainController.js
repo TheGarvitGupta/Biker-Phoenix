@@ -1,6 +1,7 @@
 
 
 var app = angular.module('directions', []);
+
 app.controller('directionsController', function($scope, $http) {
 
 	$scope.search = function() {
@@ -19,21 +20,42 @@ app.controller('directionsController', function($scope, $http) {
 		row = row.substring(0, row.length-1);
 		var row = row + "]";
 
-		console.log(row);
-
 		jsonObject = JSON.parse(row);
 
 		$scope.path = jsonObject;
+	}
+	/* Set Defaults */
 
-		console.log(jsonObject);
+	// $scope.source = "Grand Central Station";
+	// $scope.destination = "Wythe Hotel";
+	// $scope.search();
+});
+
+app.controller('directionsController-map', function($scope, $http) {
+
+	$scope.search = function() {
+		var data = get_best_path($scope.source,$scope.destination);
+		//jsonMake = JSON.stringify(data);
+		jsonMake = data;
+
+		var row = "[";
+
+		for (var i=0; i<jsonMake[2].length; i++) {
+			var row = row + "{\"start\": \"" +  jsonMake[2][i][0] + "\", \"end\": \"" + jsonMake[2][i][1] + "\", \"mode\": \"" + jsonMake[2][i][2] + "\", \"time\":" + jsonMake[2][i][3].toFixed(2) + ", \"distance\":" + jsonMake[2][i][4].toFixed(2) + "},";
+		}
+
+		row = row.substring(0, row.length-1);
+		var row = row + "]";
+
+		jsonObject = JSON.parse(row);
+		clicke(jsonObject);
 	}
 
 	/* Set Defaults */
-
-	$scope.source = "Grand Central Station";
-	$scope.destination = "Wythe Hotel";
-	// $scope.search();
+	// $scope.source = "Grand Central Station";
+	// $scope.destination = "Wythe Hotel";
 });
+
 
 var app = angular.module('bike-stations', []);
 app.controller('allBikes', function($scope, $http) {
