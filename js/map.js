@@ -98,27 +98,35 @@ function initMap() {
   		center: centerOfMap,
   		zoom: 12
   	});
+  	console.log("Success init");
 
   	// set event listener 
   	// the place we should change the element value to link the function change
-    document.getElementById('submit').addEventListener('click', function() {
-    	clear_all();
+  //   document.getElementById('submit').addEventListener('click', function() {
+  //   	clear_all();
 
-		var start = document.getElementById('start').value;
-		var mid = document.getElementById('mid').value;
-		var end = document.getElementById('end').value;
-		var type1 = document.getElementById('type1').value;
-		var type2 = document.getElementById('type2').value;
-		routes = [[start,mid,type1],[mid,end,type2]];
+		// var start = document.getElementById('start').value;
+		// var mid = document.getElementById('mid').value;
+		// var end = document.getElementById('end').value;
+		// var type1 = document.getElementById('type1').value;
+		// var type2 = document.getElementById('type2').value;
+		// routes = [[start,mid,type1],[mid,end,type2]];
 
-		clicke();
-    });
+		// clicke();
+  //   });
+
+
 
 }
 
 
-function clicke(){
-  	// Set-up information
+function clicke(json_obj){
+  	// Set-up information  	
+  	for (var i = 0; i < json_obj.length; i++){
+  		var tmp_route = [json_obj[i].start,json_obj[i].end,json_obj[i].mode];
+  		console.log(json_obj[i]);
+  		routes.push(tmp_route);
+  	}
 	init_location(routes);
 
     // Draw the markers
@@ -129,7 +137,6 @@ function clicke(){
     for(i = 0; i < routes.length; i++){
 	    draw_path(routes[i][0],routes[i][1],routes[i][2]);
     }
-
 	console.log("FINISH");
 }
 
@@ -196,7 +203,6 @@ function draw_path(start,end,mode){
 
 	// choose the correct display object
 	var obj = map_opt.get(mode);
-	console.log(obj);
 	var direction_serive = obj.dir_ser;
 	var path_line = obj.path_line;
 
