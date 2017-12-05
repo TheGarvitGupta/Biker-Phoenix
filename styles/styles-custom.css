@@ -137,31 +137,37 @@
 	color: #F5F5F5;
 }
 
-.loader {
-  height: 4px;
-  width: 100%;
+.load-bar {
   position: relative;
-  overflow: hidden;
-  background-color: #ddd;
-}
-.loader:before{
-  display: block;
-  position: absolute;
-  content: "";
-  left: -200px;
-  width: 200px;
+  width: 100%;
   height: 4px;
-  background-color: #344750;
-  animation: loading 2s linear infinite;
+  background-color: #26A69A;
 }
-
+.bar {
+  content: "";
+  display: inline;
+  position: absolute;
+  width: 0;
+  height: 100%;
+  left: 50%;
+  text-align: center;
+}
+.bar:nth-child(1) {
+  background-color: #00796B;
+  animation: loading 0.5s linear infinite;
+}
+.bar:nth-child(2) {
+  background-color: #00695C;
+  animation: loading 0.5s linear 0.2s infinite;
+}
+.bar:nth-child(3) {
+  background-color: #00897B;
+  animation: loading 1s linear 0.5s infinite;
+}
 @keyframes loading {
-    from {left: -200px; width: 30%;}
-    50% {width: 30%;}
-    70% {width: 70%;}
-    80% { left: 50%;}
-    95% {left: 120%;}
-    to {left: 100%;}
+    from {left: 50%; width: 0;z-index:100;}
+    33.3333% {left: 0; width: 100%;z-index: 10;}
+    to {left: 0; width: 100%;}
 }
 
 #map {
