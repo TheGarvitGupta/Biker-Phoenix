@@ -82,7 +82,7 @@ function initMap() {
 
   	}
  	for (var i = 0; i < s_mode_num; i++){
-  		sub_objs.push({mode: 'TRANSIT',dir_ser: dir_ser_s[i], path_line: pathLine_s[i]})
+  		sub_objs.push({mode: 'TRANSIT',transit_mode: 'subway',dir_ser: dir_ser_s[i], path_line: pathLine_s[i]})
   		map_opt.set('SUBWAY'+(i+1),sub_objs[i]);
 
   	}
@@ -121,7 +121,8 @@ function initMap() {
 
 
 function clicke(json_obj){
-  	// Set-up information  	
+  	// Set-up information 
+  	clear_all(); 	
   	for (var i = 0; i < json_obj.length; i++){
   		var tmp_route = [json_obj[i].start,json_obj[i].end,json_obj[i].mode];
   		console.log(json_obj[i]);
