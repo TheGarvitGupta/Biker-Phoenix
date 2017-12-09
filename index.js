@@ -1,4 +1,7 @@
 var express = require('express')
+var passport = require('passport');
+var Strategy = require('passport-facebook').Strategy;
+
 var app = express()
 var path = require('path');
 app.use("/styles", express.static(__dirname + '/styles'));
@@ -16,11 +19,51 @@ var connection = mysql.createConnection({
 	port: '8000'
 });
 
+passport.use(new Strategy({
+    clientID: 781763642029325,
+    clientSecret: '4c76299f38ff88f356ed7ef1dd2b83f4',
+    callbackURL: 'http://localhost:5000/login/facebook/return'
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    // In this example, the user's Facebook profile is supplied as the user
+    // record.  In a production-quality application, the Facebook profile should
+    // be associated with a user record in the application's database, which
+    // allows for account linking and authentication with other identity
+    // providers.
+    return cb(null, profile);
+  }));
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
+// Configure view engine to render EJS templates.
+
+app.set('views', __dirname + '/view');
+app.set('view engine', 'ejs');
+
+// Use application-level middleware for common functionality, including
+// logging, parsing, and session handling.
+app.use(require('morgan')('combined'));
+app.use(require('cookie-parser')());
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(req, res, next) {
-	res.sendFile(path.join(__dirname, '/', 'index.html'));
+	if (req.user) {
+		res.render('index', { user: req.user });
+	} else {
+		res.render('login');
+	}
+	
 });
 
 app.get('/map', function(req, res, next) {
@@ -133,6 +176,32 @@ app.get('/closestBikeToSubway/:subway_id', function(req, res) {
 			res.send(rows);
 		}
 	});
+});
+
+app.get('/login',
+  function(req, res){
+    res.render('trial');
+  });
+
+app.get('/login/facebook',
+  passport.authenticate('facebook'));
+
+app.get('/login/facebook/return', 
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    res.redirect('/');
+  });
+
+app.get('/profile',
+  require('connect-ensure-login').ensureLoggedIn(),
+  function(req, res){
+    res.render('profile', { user: req.user });
+  });
+
+app.get('/logout', function (req, res){
+  req.session.destroy(function (err) {
+    res.redirect('/'); //Inside a callback… bulletproof!
+  });
 });
 
 app.listen(app.get('port'), function() {
