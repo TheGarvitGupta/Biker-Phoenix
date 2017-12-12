@@ -94,6 +94,16 @@ function find_closest_bike_to_subway(subway_station_id){
 }
 
 function geocoding(address){
+
+	alert("Yeah!");
+
+	console.log("Received: " + address);
+	var cacheURL = '/cached-location-check/'+address;
+	console.log("cacheURL: " + cacheURL);
+
+	var resultCache = httpGet(cacheURL);
+	console.log("resultCache: " + resultCache);
+
 	address = update_address(address);
 	var url_string = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyD0y1Q1FGLwHEkqjPHrNeodwGCf3VRZYlA";
 	var xmlHttp = new XMLHttpRequest();
@@ -191,6 +201,8 @@ function get_subway_time(address1,address2){
 
 
 function get_best_path(address_1,address_2){
+
+	alert("Yeah!");
 
 	address1 = update_address(address_1);
 	address2 = update_address(address_2);
