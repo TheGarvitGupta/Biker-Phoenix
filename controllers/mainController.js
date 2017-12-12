@@ -68,8 +68,8 @@ app.controller('directionsController-map', function($scope, $http) {
 	}
 
 	/* Set Defaults */
-	// $scope.source = "Grand Central Station";
-	// $scope.destination = "Wythe Hotel";
+	$scope.source = "yankee stadium";
+	$scope.destination = "Wythe Hotel";
 });
 
 

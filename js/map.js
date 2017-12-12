@@ -20,7 +20,7 @@ var infowindow;
 // Constant param, the walking mode nubmer, walking1, walking2, walking3, walking4
 var w_mode_num = 4;
 var b_mode_num = 2;
-var s_mode_num = 1;
+var s_mode_num = 2;
 
 
 // initialize the map function
@@ -82,7 +82,7 @@ function initMap() {
 
   	}
  	for (var i = 0; i < s_mode_num; i++){
-  		sub_objs.push({mode: 'TRANSIT',transit_mode: 'subway',dir_ser: dir_ser_s[i], path_line: pathLine_s[i]})
+  		sub_objs.push({mode: 'TRANSIT',dir_ser: dir_ser_s[i], path_line: pathLine_s[i]})
   		map_opt.set('SUBWAY'+(i+1),sub_objs[i]);
 
   	}
@@ -125,7 +125,7 @@ function clicke(json_obj){
   	clear_all(); 	
   	for (var i = 0; i < json_obj.length; i++){
   		var tmp_route = [json_obj[i].start,json_obj[i].end,json_obj[i].mode];
-  		console.log(json_obj[i]);
+  		// console.log(json_obj[i]);
   		routes.push(tmp_route);
   	}
 	init_location(routes);
@@ -211,18 +211,48 @@ function draw_path(start,end,mode){
 		origin: loc_start, 
 		destination: loc_end,
 		optimizeWaypoints: false,
-		travelMode: obj.mode
+		travelMode: obj.mode,
+		unitSystem: google.maps.UnitSystem.IMPERIAL
 	};
+	if(obj.mode == 'TRANSIT'){
+		request = {
+			origin: loc_start, 
+			destination: loc_end,
+			optimizeWaypoints: false,
+			travelMode: obj.mode,
+			transitOptions: {
+				modes: ['SUBWAY'],
+				routingPreference: 'FEWER_TRANSFERS'
+			},
+			unitSystem: google.maps.UnitSystem.IMPERIAL
+		};
+
+	}
 	direction_serive.route(request, function(response, status) {
-		if (status == google.maps.DirectionsStatus.OK) {
+		// we cannot specify pathline color when the mode is transit !!
+		if(obj.mode == 'TRANSIT'){
 			var directions_display = new google.maps.DirectionsRenderer({
-				suppressMarkers: true, 
-				suppressBicyclingLayer: true,
-				polylineOptions: path_line
+			suppressMarkers: true, 
+			suppressBicyclingLayer: true,
 			});
-			directions_display.setMap(map);
-			directions_display.setDirections(response);
-        } 
+			if (status == google.maps.DirectionsStatus.OK) {
+				directions_display.setMap(map);
+				directions_display.setDirections(response);
+        	}	
+		}
+		// we change another line color when mode is either walk or bike
+		else{
+			var directions_display = new google.maps.DirectionsRenderer({
+			suppressMarkers: true, 
+			suppressBicyclingLayer: true,
+			polylineOptions: path_line,
+			});
+			if (status == google.maps.DirectionsStatus.OK) {
+				directions_display.setMap(map);
+				directions_display.setDirections(response);
+			}
+		}
+		 
     }); 
 
 }
