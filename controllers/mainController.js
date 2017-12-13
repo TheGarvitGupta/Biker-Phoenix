@@ -44,6 +44,7 @@ app.controller('directionsController', function($scope, $http, $timeout) {
 
 	$scope.source = "Grand Central Station";
 	$scope.destination = "Wythe Hotel";
+	
 	$scope.search();
 });
 

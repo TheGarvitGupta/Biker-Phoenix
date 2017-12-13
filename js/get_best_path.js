@@ -103,15 +103,34 @@ function find_closest_bike_to_subway(subway_station_id){
 }
 
 function geocoding(address){
-	address = update_address(address);
-	var url_string = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyD0y1Q1FGLwHEkqjPHrNeodwGCf3VRZYlA";
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.open( "GET", url_string, false ); // false for synchronous request
-	xmlHttp.send( null );
-	var data = JSON.parse(xmlHttp.responseText);
-	var latitude = data.results[0].geometry.location.lat;
-	var longitude = data.results[0].geometry.location.lng;
-	return [latitude, longitude];
+
+	var cacheURL = '/cached-location-check/'+address;
+	var resultCache = httpGet(cacheURL);
+
+	if (resultCache != "[]") {
+		// This function executes when the result has a match
+		console.log("Request - [FOUND IN CACHE]: " + address + ". API call dismissed.");
+		response2 = eval(resultCache);
+		return [response2[0].latitude, response2[0].longitude];
+	}
+
+	else {
+
+		console.log("Request - [Not cached, reaching Google]: " + address + ". Coordinated stored in cache");
+		address = update_address(address);
+		var url_string = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyD0y1Q1FGLwHEkqjPHrNeodwGCf3VRZYlA";
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.open( "GET", url_string, false ); // false for synchronous request
+		xmlHttp.send( null );
+		var data = JSON.parse(xmlHttp.responseText);
+		var latitude = data.results[0].geometry.location.lat;
+		var longitude = data.results[0].geometry.location.lng;
+
+		insertCacheURL = '/cached-location-insert/'+ latitude + '/' + longitude + '/' + address;
+		httpGet(insertCacheURL);
+
+		return [latitude, longitude];
+	}
 }
 
 function reverse_geocoding(latitude,longitude){
