@@ -100,6 +100,7 @@ app.controller('allBikes', function($scope, $http) {
 			method: 'GET',
 			url: '/all-bikes/' + $scope.name
 		}).then(function successCallback(response) {
+			console.log(response);
 			$scope.matches = response.data;
 			console.log(response);
 		}, function errorCallback(response) {
