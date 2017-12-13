@@ -39,6 +39,16 @@ app.controller('directionsController', function($scope, $http, $timeout) {
 			$scope.show = false;
 
 		}, 500);
+
+		$http({
+			method: 'GET',
+			url: '/add-history/'+$scope.source+ "/"+ $scope.destination
+		}).then(function successCallback(response) {
+			$scope.matches = response.data;
+			console.log(response);
+		}, function errorCallback(response) {
+			console.log(response);
+		});
 	}
 	/* Set Defaults */
 
@@ -100,7 +110,6 @@ app.controller('allBikes', function($scope, $http) {
 			method: 'GET',
 			url: '/all-bikes/' + $scope.name
 		}).then(function successCallback(response) {
-			console.log(response);
 			$scope.matches = response.data;
 			console.log(response);
 		}, function errorCallback(response) {
