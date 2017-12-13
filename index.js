@@ -66,12 +66,23 @@ app.get('/', function(req, res, next) {
 	
 });
 
+app.get('/getname', function(req,res,next){
+	if (req.user){
+		res.send(req.user.displayName);
+	}
+	else {
+		res.send("Anonymous");
+	}
+	console.log(req.user);
+});
+
+
 app.get('/map', function(req, res, next) {
 	res.sendFile(path.join(__dirname, '/view', 'map.html'));
 });
 
-app.get('/history', function(req, res, next) {
-	res.sendFile(path.join(__dirname, '/view', 'history.html'));
+app.get('/user-history', function(req, res, next) {
+	res.sendFile(path.join(__dirname, '/view', 'user-history.html'));
 });
 
 app.get('/bike-stations', function(req, res, next) {
@@ -166,6 +177,22 @@ app.get('/closestBikeToSubway/:subway_id', function(req, res) {
 	//var query = 'SELECT bike_station_id, latitude, longitude FROM bike_stations WHERE bike_station_id = (SELECT bike_station_id FROM subway_bike_shortest_distances WHERE subway_station_id = "'+req.params.subway_id+'")';
 
 	//var query = 'SELECT bike_station_id, distance FROM subway_bike_shortest_distances WHERE subway_station_id ="'+ req.params.subway_id +'"';
+	console.log(query);
+
+	connection.query(query, function(err, rows, fields) {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			res.send(rows);
+		}
+	});
+});
+
+app.get('/all-history/', function(req, res) {
+
+	var query = 'SELECT source, destination FROM Users WHERE username="'+req.user.displayName+'"';
+
 	console.log(query);
 
 	connection.query(query, function(err, rows, fields) {

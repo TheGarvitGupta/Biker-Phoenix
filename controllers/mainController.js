@@ -71,6 +71,24 @@ app.controller('directionsController-map', function($scope, $http) {
 	// $scope.source = "Grand Central Station";
 	// $scope.destination = "Wythe Hotel";
 });
+app.controller('disname', function($scope, $http) {
+
+	$scope.fun =function() {
+		$http({
+			method: 'GET',
+			url: '/getname/'
+		}).then(function successCallback(response) {
+			$scope.match = response.data;
+			console.log(response);
+		}, function errorCallback(response) {
+			console.log(response);
+		});
+	}
+	$scope.fun();
+
+});
+
+
 
 
 var app = angular.module('bike-stations', []);
@@ -94,6 +112,26 @@ app.controller('allBikes', function($scope, $http) {
 	$scope.search();
 });
 
+
+app.controller('disname', function($scope, $http) {
+
+	$scope.fun =function() {
+		$http({
+			method: 'GET',
+			url: '/getname/'
+		}).then(function successCallback(response) {
+			$scope.match = response.data;
+			console.log(response);
+		}, function errorCallback(response) {
+			console.log(response);
+		});
+	}
+	$scope.fun();
+
+});
+
+
+
 var app = angular.module('subway-stations', []);
 app.controller('allSubways', function($scope, $http) {
 
@@ -113,4 +151,58 @@ app.controller('allSubways', function($scope, $http) {
 
 	$scope.name = "Queens";
 	$scope.search();
+});
+
+app.controller('disname', function($scope, $http) {
+
+	$scope.fun =function() {
+		$http({
+			method: 'GET',
+			url: '/getname/'
+		}).then(function successCallback(response) {
+			$scope.match = response.data;
+			console.log(response);
+		}, function errorCallback(response) {
+			console.log(response);
+		});
+	}
+	$scope.fun();
+
+});
+
+
+
+var app = angular.module('user-history', []);
+app.controller('allHistory', function($scope, $http) {
+
+	$scope.search = function() {
+		$http({
+			method: 'GET',
+			url: '/all-history/'
+		}).then(function successCallback(response) {
+			$scope.matches = response.data;
+			console.log(response);
+		}, function errorCallback(response) {
+			console.log(response);
+		});
+	}
+
+	/* Set Defaults */
+	$scope.search();
+});
+app.controller('disname', function($scope, $http) {
+
+	$scope.fun =function() {
+		$http({
+			method: 'GET',
+			url: '/getname/'
+		}).then(function successCallback(response) {
+			$scope.match = response.data;
+			console.log(response);
+		}, function errorCallback(response) {
+			console.log(response);
+		});
+	}
+	$scope.fun();
+
 });
