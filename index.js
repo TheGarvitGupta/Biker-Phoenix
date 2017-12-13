@@ -1,6 +1,18 @@
 var express = require('express')
 var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
+var url = "mongodb://localhost:27017/mydb";
+
+const Mongod = require('mongod');
+const server = new Mongod(27017); 
+server.open((err) => {
+	if (err === null) {
+		console.log('success connect to mongod');
+	}
+});
+
+// Retrieve
+var MongoClient = require('mongodb').MongoClient;
 
 var app = express()
 var path = require('path');
@@ -61,14 +73,8 @@ app.get('/', function(req, res, next) {
 	if (req.user) {
 		res.render('index', { user: req.user });
 	} else {
-		res.render('login');
+		res.render('index', { user: "garvit" });
 	}
-	
-});
-
-app.get('/guest', function(req, res, next) {
-		console.log("HERE")
-		res.render('index', {user: "Guest"});
 	
 });
 
@@ -77,7 +83,7 @@ app.get('/getname', function(req,res,next){
 		res.send(req.user.displayName);
 	}
 	else {
-		res.send("Guest");
+		res.send("Anonymous");
 	}
 	console.log(req.user);
 });
@@ -101,16 +107,18 @@ app.get('/subway-stations', function(req, res, next) {
 
 app.get('/all-bikes/:location', function(req, res) {
 
-	var query = "SELECT * FROM bike_stations WHERE stationName LIKE '%" + req.params.location + "%'";
-	console.log(query);
-
-	connection.query(query, function(err, rows, fields) {
-		if (err) {
-			console.log(err);
-		}
-		else {
-			res.send(rows);
-		}
+	MongoClient.connect(url, function(err, db) {
+		if (err) throw err;
+		var search = req.params.location;
+		var query = {
+			stationName: new RegExp(search, 'i')
+		};
+		var dbase = db.db("mydb");
+		dbase.collection("bike").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			res.send(result);
+			db.close();
+		});
 	});
 });
 
@@ -234,15 +242,7 @@ app.get('/closestBikeToSubway/:subway_id', function(req, res) {
 
 app.get('/all-history/', function(req, res) {
 
-
-	if (req.user){
-		var name =req.user.displayName;
-	}
-	else {
-		var name = "guest";
-	}
-
-	var query = 'SELECT source, destination, time FROM Users WHERE username="'+name+'"';
+	var query = 'SELECT source, destination FROM Users WHERE username="'+req.user.displayName+'"';
 
 	console.log(query);
 
@@ -255,38 +255,6 @@ app.get('/all-history/', function(req, res) {
 		}
 	});
 });
-
-
-app.get('/add-history/:source/:destination', function(req, res) {
-
-	var time = new Date();
-	var now=(time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
-
-	if (req.user){
-		var name =req.user.displayName;
-	}
-	else {
-		var name = "guest";
-	}
-
-	console.log(now)
-	var query = 'Insert into Users VALUES("'+name+'","'+req.params.source+'","'+req.params.destination+'","'+now+'")';
-
-	console.log(query);
-
-	connection.query(query, function(err, rows, fields) {
-		if (err) {
-			console.log(err);
-		}
-		else {
-			res.send(rows);
-		}
-	});
-});
-
-
-
-
 
 app.get('/login',
   function(req, res){
