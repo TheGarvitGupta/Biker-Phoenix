@@ -24,7 +24,7 @@
 		<link rel="stylesheet" href="../styles/styles-custom.css">
 	</head>
 	<body>
-		<div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+		<div ng-app="directions" class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
 			<header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
 				<div class="mdl-layout__header-row">
 					<span class="mdl-layout-title">Biker Phoenix</span>
@@ -41,11 +41,11 @@
 				<header class="demo-drawer-header">
 					<img src="https://pbs.twimg.com/profile_images/921416829049991168/pqXdvLhR_400x400.jpg" class="demo-avatar">
 					<div class="demo-avatar-dropdown">
-						<span><% if (!user) { %>
-	<p>Welcome! Please <a href="/login">log in</a>.</p>
-<% } else { %>
-	<%= user.displayName %>
-<% } %></span>
+						<span><div ng-controller="disname" class="mdl-grid demo-content">
+    
+                  <div>{{match}}</div>
+              
+              </div></span>
 						<div class="mdl-layout-spacer"></div>
 						<button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
 						<i class="material-icons" role="presentation">arrow_drop_down</i>
@@ -67,7 +67,7 @@
 				</nav>
 			</div>
 			<main class="mdl-layout__content mdl-color--grey-100">
-				<div ng-app="directions" ng-controller="directionsController" class="mdl-grid demo-content">
+				<div ng-controller="directionsController" class="mdl-grid demo-content">
 					<div class="mdl-cell ">
 						<div class="mdl-color--white mdl-shadow--2dp input-boxes">
 							<input ng-model="source" type="text" placeholder="Source" class="source-box location-input">

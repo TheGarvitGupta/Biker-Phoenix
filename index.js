@@ -61,8 +61,14 @@ app.get('/', function(req, res, next) {
 	if (req.user) {
 		res.render('index', { user: req.user });
 	} else {
-		res.render('index', { user: "garvit" });
+		res.render('login');
 	}
+	
+});
+
+app.get('/guest', function(req, res, next) {
+		console.log("HERE")
+		res.render('index', {user: "Guest"});
 	
 });
 
@@ -71,7 +77,7 @@ app.get('/getname', function(req,res,next){
 		res.send(req.user.displayName);
 	}
 	else {
-		res.send("Anonymous");
+		res.send("Guest");
 	}
 	console.log(req.user);
 });
@@ -228,7 +234,15 @@ app.get('/closestBikeToSubway/:subway_id', function(req, res) {
 
 app.get('/all-history/', function(req, res) {
 
-	var query = 'SELECT source, destination FROM Users WHERE username="'+req.user.displayName+'"';
+
+	if (req.user){
+		var name =req.user.displayName;
+	}
+	else {
+		var name = "guest";
+	}
+
+	var query = 'SELECT source, destination, time FROM Users WHERE username="'+name+'"';
 
 	console.log(query);
 
@@ -241,6 +255,38 @@ app.get('/all-history/', function(req, res) {
 		}
 	});
 });
+
+
+app.get('/add-history/:source/:destination', function(req, res) {
+
+	var time = new Date();
+	var now=(time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds());
+
+	if (req.user){
+		var name =req.user.displayName;
+	}
+	else {
+		var name = "guest";
+	}
+
+	console.log(now)
+	var query = 'Insert into Users VALUES("'+name+'","'+req.params.source+'","'+req.params.destination+'","'+now+'")';
+
+	console.log(query);
+
+	connection.query(query, function(err, rows, fields) {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			res.send(rows);
+		}
+	});
+});
+
+
+
+
 
 app.get('/login',
   function(req, res){
