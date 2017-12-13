@@ -202,7 +202,7 @@ app.get('/bestPath/:longitude/:latitude', function(req, res) {
 
 app.get('/closestSubway/:latitude/:longitude', function(req, res) {
 
-	var query = 'SELECT s.id, s.longitude, s.latitude, s.officialAddress, s.displayAddress FROM subway_stations_official_names s ORDER BY  POWER((s.longitude -(' + req.params.longitude + ')),2)+POWER((s.latitude - (' + req.params.latitude + ')),2) ASC LIMIT 1';
+	var query = 'SELECT s.id, s.longitude, s.latitude, s.officialAddress, s.name FROM subway_stations_official_names s ORDER BY  POWER((s.longitude -(' + req.params.longitude + ')),2)+POWER((s.latitude - (' + req.params.latitude + ')),2) ASC LIMIT 1';
 	console.log(query);
 
 	connection.query(query, function(err, rows, fields) {
@@ -217,7 +217,7 @@ app.get('/closestSubway/:latitude/:longitude', function(req, res) {
 
 app.get('/closestBike/:latitude/:longitude', function(req, res) {
 
-	var query = 'SELECT b.bike_station_id, b.longitude, b.latitude, b.officialAddress, b.displayAddress FROM bike_stations_official_names b ORDER BY  POWER((b.longitude -(' + req.params.longitude + ')),2)+POWER((b.latitude - (' + req.params.latitude + ')),2) ASC LIMIT 1';
+	var query = 'SELECT b.bike_station_id, b.longitude, b.latitude, b.officialAddress, b.stationName FROM bike_stations_official_names b ORDER BY  POWER((b.longitude -(' + req.params.longitude + ')),2)+POWER((b.latitude - (' + req.params.latitude + ')),2) ASC LIMIT 1';
 	console.log(query);
 
 	connection.query(query, function(err, rows, fields) {

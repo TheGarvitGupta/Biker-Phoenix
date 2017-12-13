@@ -36,7 +36,7 @@ function find_closest_subway_station(address){
 	var subway_station_latitude = response2.latitude;
 	var subway_station_longitude = response2.longitude;
 	var subway_station_address = response2.officialAddress;
-	var subway_station_display_address = response2.displayAddress;
+	var subway_station_display_address = response2.name;
 
 	//calculate walking time to address of the station found
 	//var subway_station_address = reverse_geocoding(subway_station_latitude,subway_station_longitude);
@@ -68,6 +68,7 @@ function find_closest_bike_station(address){
 	var bike_station_latitude = response2[0].latitude;
 	var bike_station_longitude = response2[0].longitude;
 	var bike_station_address = response2[0].officialAddress;
+	var bike_station_display_address = response2[0].stationName;
 
 	//calculate walking time to address of the station found
 
@@ -78,7 +79,7 @@ function find_closest_bike_station(address){
 	walking_distance = walking[1];
 
 
-	return [bike_station_id, bike_station_address, walking_time, walking_distance];
+	return [bike_station_id, bike_station_address, walking_time, walking_distance, bike_station_display_address];
 }
 
 function find_closest_bike_to_subway(subway_station_id){
@@ -280,6 +281,7 @@ function get_best_path(address_1,address_2){
 	near_bike_station_start_address = response3[1];
 	near_bike_start_walktime = response3[2];
 	near_bike_start_walkdistance = response3[3];
+	near_bike_station_start_display_address = response3[4];
 
 
 	response4 = find_closest_bike_station(address2);
@@ -288,6 +290,7 @@ function get_best_path(address_1,address_2){
 	near_bike_station_end_address = response4[1];
 	near_bike_end_walktime = response4[2];
 	near_bike_end_walkdistance = response4[3];
+	near_bike_station_end_display_address = response4[4];
 
 
 	bike = get_bike_time(near_bike_station_start_address,near_bike_station_end_address);
@@ -327,9 +330,9 @@ function get_best_path(address_1,address_2){
 	walk_stops_addresses = [walk_section_1]
 
 	total_time_bike = near_bike_start_walktime + bike_time + near_bike_end_walktime;
-	bike_section_1 = [address_1,near_bike_station_start_address,"WALKING1",near_bike_start_walktime,near_bike_start_walkdistance];
-	bike_section_2 = [near_bike_station_start_address,near_bike_station_end_address,"BIKING1",bike_time, bike_distance];
-	bike_section_3 = [near_bike_station_end_address,address_2,"WALKING4",near_bike_end_walktime,near_bike_end_walkdistance];
+	bike_section_1 = [address_1,near_bike_station_start_display_address,"WALKING1",near_bike_start_walktime,near_bike_start_walkdistance];
+	bike_section_2 = [near_bike_station_start_display_address,near_bike_station_end_display_address,"BIKING1",bike_time, bike_distance];
+	bike_section_3 = [near_bike_station_end_display_address,address_2,"WALKING4",near_bike_end_walktime,near_bike_end_walkdistance];
 	bike_stops_addresses = [bike_section_1,bike_section_2,bike_section_3];
 
 	total_time_subway = near_subway_start_walktime + subway_time + near_subway_end_walktime;
@@ -339,8 +342,8 @@ function get_best_path(address_1,address_2){
 	subway_stops_addresses = [subway_section_1,subway_section_2,subway_section_3];
 
 	total_time_bike_subway = near_bike_start_walktime + bike_time_start + walk_from_bike_to_subway_time + subway_time + near_subway_end_walktime;
-	bike_subway_section_1 = [address_1,near_bike_station_start_address,"WALKING1",near_bike_start_walktime,near_bike_start_walkdistance];
-	bike_subway_section_2 = [near_bike_station_start_address,bike_near_subway_start_address,"BIKING1",bike_time_start,bike_distance_start];
+	bike_subway_section_1 = [address_1,near_bike_station_start_display_address,"WALKING1",near_bike_start_walktime,near_bike_start_walkdistance];
+	bike_subway_section_2 = [near_bike_station_start_display_address,bike_near_subway_start_address,"BIKING1",bike_time_start,bike_distance_start];
 	bike_subway_section_3 = [bike_near_subway_start_address,near_subway_station_start_display_address,"WALKING2",walk_from_bike_to_subway_time,walk_from_bike_to_subway_distance];
 	bike_subway_section_4 = [near_subway_station_start_display_address,near_subway_station_end_display_address,"SUBWAY1",subway_time, subway_distance];
 	bike_subway_section_5 = [near_subway_station_end_display_address,address_2,"WALKING4",near_subway_end_walktime,near_subway_end_walkdistance];
@@ -350,18 +353,18 @@ function get_best_path(address_1,address_2){
 	subway_bike_section_1 = [address_1,near_subway_station_start_display_address,"WALKING1",near_subway_start_walktime, near_subway_start_walkdistance];
 	subway_bike_section_2 = [near_subway_station_start_display_address,near_subway_station_end_display_address,"SUBWAY1",subway_time,subway_distance];
 	subway_bike_section_3 = [near_subway_station_end_display_address,bike_near_subway_end_address,"WALKING3",walk_from_subway_to_bike_time,walk_from_subway_to_bike_distance];
-	subway_bike_section_4 = [bike_near_subway_end_address,near_bike_station_end_address,"BIKING2",bike_time_end, bike_distance_end];
-	subway_bike_section_5 = [near_bike_station_end_address,address_2,"WALKING4",near_bike_end_walktime, near_bike_end_walkdistance];
+	subway_bike_section_4 = [bike_near_subway_end_address,near_bike_station_end_display_address,"BIKING2",bike_time_end, bike_distance_end];
+	subway_bike_section_5 = [near_bike_station_end_display_address,address_2,"WALKING4",near_bike_end_walktime, near_bike_end_walkdistance];
 	subway_bike_stops_addresses = [subway_bike_section_1,subway_bike_section_2,subway_bike_section_3,subway_bike_section_4,subway_bike_section_5];
 
 	total_time_bike_subway_bike = near_bike_start_walktime + bike_time_start + walk_from_bike_to_subway_time + subway_time + walk_from_subway_to_bike_time + bike_time_end + near_bike_end_walktime;
-	bike_subway_bike_section_1 = [address_1,near_bike_station_start_address,"WALKING1",near_bike_start_walktime, near_bike_start_walkdistance];
-	bike_subway_bike_section_2 = [near_bike_station_start_address,bike_near_subway_start_address,"BIKING1",bike_time_start, bike_distance_start];
+	bike_subway_bike_section_1 = [address_1,near_bike_station_start_display_address,"WALKING1",near_bike_start_walktime, near_bike_start_walkdistance];
+	bike_subway_bike_section_2 = [near_bike_station_start_display_address,bike_near_subway_start_address,"BIKING1",bike_time_start, bike_distance_start];
 	bike_subway_bike_section_3 = [bike_near_subway_start_address,near_subway_station_start_display_address,"WALKING2",walk_from_bike_to_subway_time, walk_from_bike_to_subway_distance];
 	bike_subway_bike_section_4 = [near_subway_station_start_display_address,near_subway_station_end_display_address,"SUBWAY1",subway_time, subway_distance];
 	bike_subway_bike_section_5 = [near_subway_station_end_display_address,bike_near_subway_end_address,"WALKING3",walk_from_subway_to_bike_time,walk_from_subway_to_bike_distance];
-	bike_subway_bike_section_6 = [bike_near_subway_end_address,near_bike_station_end_address,"BIKING2",bike_time_end,bike_distance_end];
-	bike_subway_bike_section_7 = [near_bike_station_end_address,address_2,"WALKING4",near_bike_end_walktime, near_bike_end_walkdistance];
+	bike_subway_bike_section_6 = [bike_near_subway_end_address,near_bike_station_end_display_address,"BIKING2",bike_time_end,bike_distance_end];
+	bike_subway_bike_section_7 = [near_bike_station_end_display_address,address_2,"WALKING4",near_bike_end_walktime, near_bike_end_walkdistance];
 	bike_subway_bike_stops_addresses = [bike_subway_bike_section_1,bike_subway_bike_section_2,bike_subway_bike_section_3,bike_subway_bike_section_4,bike_subway_bike_section_5,bike_subway_bike_section_6,bike_subway_bike_section_7];
 
 	times = [total_time_walk, total_time_bike, total_time_subway, total_time_bike_subway, total_time_subway_bike, total_time_bike_subway_bike];
