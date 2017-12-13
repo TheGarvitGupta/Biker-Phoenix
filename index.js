@@ -1,6 +1,18 @@
 var express = require('express')
 var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
+var url = "mongodb://localhost:27017/mydb";
+
+const Mongod = require('mongod');
+const server = new Mongod(27017); 
+server.open((err) => {
+	if (err === null) {
+		console.log('success connect to mongod');
+	}
+});
+
+// Retrieve
+var MongoClient = require('mongodb').MongoClient;
 
 var app = express()
 var path = require('path');
@@ -101,16 +113,18 @@ app.get('/subway-stations', function(req, res, next) {
 
 app.get('/all-bikes/:location', function(req, res) {
 
-	var query = "SELECT * FROM bike_stations WHERE stationName LIKE '%" + req.params.location + "%'";
-	console.log(query);
-
-	connection.query(query, function(err, rows, fields) {
-		if (err) {
-			console.log(err);
-		}
-		else {
-			res.send(rows);
-		}
+	MongoClient.connect(url, function(err, db) {
+		if (err) throw err;
+		var search = req.params.location;
+		var query = {
+			stationName: new RegExp(search, 'i')
+		};
+		var dbase = db.db("mydb");
+		dbase.collection("bike").find(query).toArray(function(err, result) {
+			if (err) throw err;
+			res.send(result);
+			db.close();
+		});
 	});
 });
 
