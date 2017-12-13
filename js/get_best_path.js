@@ -36,6 +36,7 @@ function find_closest_subway_station(address){
 	var subway_station_latitude = response2.latitude;
 	var subway_station_longitude = response2.longitude;
 	var subway_station_address = response2.officialAddress;
+	var subway_station_display_address = response2.displayAddress;
 
 	//calculate walking time to address of the station found
 	//var subway_station_address = reverse_geocoding(subway_station_latitude,subway_station_longitude);
