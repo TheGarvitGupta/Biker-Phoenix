@@ -61,7 +61,7 @@ app.get('/', function(req, res, next) {
 	if (req.user) {
 		res.render('index', { user: req.user });
 	} else {
-		res.render('login');
+		res.render('index', { user: "garvit" });
 	}
 	
 });
@@ -119,6 +119,43 @@ app.get('/all-subways/:location', function(req, res) {
 		}
 		else {
 			res.send(rows);
+		}
+	});
+});
+
+app.get('/cached-location-insert/:lat/:lon/:add', function(req, res) {
+
+	var query = "INSERT INTO cachedLocations VALUES ('" + req.params.add + "', '" + req.params.lat + "', '" + req.params.lon + "');"
+	console.log("INSERT!: " + query);
+
+	connection.query(query, function(err, rows, fields) {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			console.log("Inserted: " + req.params.add);
+			res.send(rows);
+		}
+	});
+});
+
+app.get('/cached-location-check/:location', function(req, res) {
+
+	var query = "SELECT * FROM cachedLocations WHERE stringAddress = '" + req.params.location.split(' ').join('+') + "'";
+	console.log("Checking Now: " + query);
+
+	connection.query(query, function(err, rows, fields) {
+		if (err) {
+			console.log(err);
+		}
+		else {
+			if (rows) {
+				res.send(rows);
+				console.log(rows);
+			}
+			else {
+				console.log("No Response");
+			}
 		}
 	});
 });
