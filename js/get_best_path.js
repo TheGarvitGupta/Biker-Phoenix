@@ -35,9 +35,11 @@ function find_closest_subway_station(address){
 	var subway_station_id = response2.id;
 	var subway_station_latitude = response2.latitude;
 	var subway_station_longitude = response2.longitude;
+	var subway_station_address = response2.officialAddress;
 
 	//calculate walking time to address of the station found
-	var subway_station_address = reverse_geocoding(subway_station_latitude,subway_station_longitude);
+	//var subway_station_address = reverse_geocoding(subway_station_latitude,subway_station_longitude);
+
 	var walking = get_walk_time(address,subway_station_address);
 	walking_time = walking[0];
 	walking_distance = walking[1];
@@ -64,10 +66,11 @@ function find_closest_bike_station(address){
 	var bike_station_id = response2[0].bike_station_id;
 	var bike_station_latitude = response2[0].latitude;
 	var bike_station_longitude = response2[0].longitude;
+	var bike_station_address = response2[0].officialAddress;
 
 	//calculate walking time to address of the station found
 
-	var bike_station_address = reverse_geocoding(bike_station_latitude,bike_station_longitude);
+	//var bike_station_address = reverse_geocoding(bike_station_latitude,bike_station_longitude);
 	var walking = get_walk_time(address,bike_station_address);
 
 	walking_time = walking[0];
@@ -88,12 +91,14 @@ function find_closest_bike_to_subway(subway_station_id){
 	bike_station_id = response2[0].bike_station_id;
 	bike_station_latitude = response2[0].blat;
 	bike_station_longitude = response2[0].blong;
+	address_bike = response2[0].bAdd;
 
 	subway_station_latitude = response2[0].slat;
 	subway_station_longitude = response2[0].slong;
+	address_subway = response2[0].sAdd;
 
-	address_bike = reverse_geocoding(bike_station_latitude,bike_station_longitude);
-	address_subway = reverse_geocoding(subway_station_latitude,subway_station_longitude);
+	//address_bike = reverse_geocoding(bike_station_latitude,bike_station_longitude);
+	//address_subway = reverse_geocoding(subway_station_latitude,subway_station_longitude);
 
 	bike_to_subway = get_walk_time(address_bike,address_subway);
 	walk_time_bike_to_subway = bike_to_subway[0];
@@ -103,6 +108,7 @@ function find_closest_bike_to_subway(subway_station_id){
 }
 
 function geocoding(address){
+	console.log("Being executed: geocoding");
 
 	var cacheURL = '/cached-location-check/'+address;
 	var resultCache = httpGet(cacheURL);
@@ -134,6 +140,8 @@ function geocoding(address){
 }
 
 function reverse_geocoding(latitude,longitude){
+	console.log("Being executed: reverse_geocoding");
+
 	var url_string = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude +","+longitude+ "&key=AIzaSyD0y1Q1FGLwHEkqjPHrNeodwGCf3VRZYlA";
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.open( "GET", url_string, false ); // false for synchronous request
@@ -233,9 +241,7 @@ function get_best_path(address_1,address_2){
 
 	address1 = update_address(address_1);
 
-	step2 = Date.now();
-	elapsed = (step2 - step1);
-	console.log("Step 1 took " + elapsed + " miliseconds");
+
 
 
 
@@ -366,6 +372,10 @@ function get_best_path(address_1,address_2){
 	stops = all_stops[index];
 
 	output = [mode, time, stops];
+
+	step2 = Date.now();
+	elapsed = (step2 - step1);
+	console.log("Entire process took " + elapsed + " miliseconds");
 
 	return output;
 

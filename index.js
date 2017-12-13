@@ -9,6 +9,9 @@ server.open((err) => {
 	if (err === null) {
 		console.log('success connect to mongod');
 	}
+	else {
+		console.log(err);
+	}
 });
 
 // Retrieve
@@ -199,7 +202,7 @@ app.get('/bestPath/:longitude/:latitude', function(req, res) {
 
 app.get('/closestSubway/:latitude/:longitude', function(req, res) {
 
-	var query = 'SELECT s.id, s.longitude, s.latitude FROM subway_stations s ORDER BY  POWER((s.longitude -(' + req.params.longitude + ')),2)+POWER((s.latitude - (' + req.params.latitude + ')),2) ASC LIMIT 1';
+	var query = 'SELECT s.id, s.longitude, s.latitude, s.officialAddress FROM subway_stations_official_names s ORDER BY  POWER((s.longitude -(' + req.params.longitude + ')),2)+POWER((s.latitude - (' + req.params.latitude + ')),2) ASC LIMIT 1';
 	console.log(query);
 
 	connection.query(query, function(err, rows, fields) {
@@ -214,7 +217,7 @@ app.get('/closestSubway/:latitude/:longitude', function(req, res) {
 
 app.get('/closestBike/:latitude/:longitude', function(req, res) {
 
-	var query = 'SELECT b.bike_station_id, b.longitude, b.latitude FROM bike_stations_official_names b ORDER BY  POWER((b.longitude -(' + req.params.longitude + ')),2)+POWER((b.latitude - (' + req.params.latitude + ')),2) ASC LIMIT 1';
+	var query = 'SELECT b.bike_station_id, b.longitude, b.latitude, b.officialAddress FROM bike_stations_official_names b ORDER BY  POWER((b.longitude -(' + req.params.longitude + ')),2)+POWER((b.latitude - (' + req.params.latitude + ')),2) ASC LIMIT 1';
 	console.log(query);
 
 	connection.query(query, function(err, rows, fields) {
@@ -229,7 +232,7 @@ app.get('/closestBike/:latitude/:longitude', function(req, res) {
 
 app.get('/closestBikeToSubway/:subway_id', function(req, res) {
 
-	var query = 'SELECT b.bike_station_id, s.id, b.latitude as blat, b.longitude as blong, s.latitude as slat, s.longitude as slong FROM bike_stations b, subway_stations s WHERE b.bike_station_id = (SELECT bike_station_id FROM subway_bike_shortest_distances WHERE subway_station_id ="'+req.params.subway_id+'") AND s.id = "'+req.params.subway_id+'"';
+	var query = 'SELECT b.bike_station_id, s.id, b.latitude as blat, b.longitude as blong, b.officialAddress as bAdd, s.latitude as slat, s.longitude as slong, s.officialAddress as sAdd FROM bike_stations_official_names b, subway_stations_official_names s WHERE b.bike_station_id = (SELECT bike_station_id FROM subway_bike_shortest_distances WHERE subway_station_id ="'+req.params.subway_id+'") AND s.id = "'+req.params.subway_id+'"';
 
 	//var query = 'SELECT bike_station_id, latitude, longitude FROM bike_stations WHERE bike_station_id = (SELECT bike_station_id FROM subway_bike_shortest_distances WHERE subway_station_id = "'+req.params.subway_id+'")';
 
