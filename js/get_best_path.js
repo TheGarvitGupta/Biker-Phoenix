@@ -229,7 +229,16 @@ function get_subway_time(address1,address2){
 
 function get_best_path(address_1,address_2){
 
+	step1 = Date.now();
+
 	address1 = update_address(address_1);
+
+	step2 = Date.now();
+	elapsed = (step2 - step1);
+	console.log("Step 1 took " + elapsed + " miliseconds");
+
+
+
 	address2 = update_address(address_2);
 
 	walk_only = get_walk_time(address1,address2);
