@@ -1,19 +1,21 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
 .login-page {
-  width: 360px;
+  width: 320px;
   padding: 8% 0 0;
-  margin: auto;
+  float: right;
+  margin-right: 100px;
 }
 .form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
-  text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+	position: relative;
+	z-index: 1;
+	background-color: #303F48;
+	max-width: 360px;
+	margin-top: 50%;
+	top: -50%;
+	padding: 40px;
+	text-align: center;
+	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 .form input {
   font-family: "Roboto", sans-serif;
@@ -89,8 +91,36 @@
   color: #EF3B3A;
 }
 body {
-  background-image: url("../images/bike.jpg");
+  background-image: url("../images/biker-home.jpg");
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
+}
+
+.button {
+  color:white !important;
+  background-color: #3C539A;
+  text-decoration: none;
+  display: block;
+  margin: 15px;
+  padding:0px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border-radius:2px;
+}
+
+.text {color: white;
+font-size: 72px;
+font-family: Roboto Condensed;
+position: absolute;
+right: 105px;
+top: 50px;
+text-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3) ;
+text-align: right}
+
+.text:after {
+	display: block;
+	content: "CIS 550, Dr. Abdussalam Alawini";
+	font-size: 27px;
 }
