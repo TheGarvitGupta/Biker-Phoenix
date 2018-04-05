@@ -1,3 +1,5 @@
+google_maps_api_key_token = "AIzaSyAsOvnXbc6F6UCVp8gbUNArKyr9TQB3GuA";
+
 function index_of_min(array) {
     var index = 0;
 	var value = array[0];
@@ -124,9 +126,10 @@ function geocoding(address){
 
 	else {
 
-		console.log("Request - [Not cached, reaching Google]: " + address + ". Coordinated stored in cache");
+		console.log("Request - [Not cached, reaching Google]: " + address + ". Coordinates stored in cache.");
 		address = update_address(address);
-		var url_string = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyD0y1Q1FGLwHEkqjPHrNeodwGCf3VRZYlA";
+		var url_string = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + google_maps_api_key_token;
+		
 		var xmlHttp = new XMLHttpRequest();
 		xmlHttp.open( "GET", url_string, false ); // false for synchronous request
 		xmlHttp.send( null );
@@ -144,7 +147,7 @@ function geocoding(address){
 function reverse_geocoding(latitude,longitude){
 	console.log("Being executed: reverse_geocoding");
 
-	var url_string = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude +","+longitude+ "&key=AIzaSyD0y1Q1FGLwHEkqjPHrNeodwGCf3VRZYlA";
+	var url_string = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude +","+longitude+ "&key=" + google_maps_api_key_token;
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.open( "GET", url_string, false ); // false for synchronous request
 	xmlHttp.send( null );
@@ -164,7 +167,7 @@ function get_walk_time(address1,address2){
 		alert("User cancelled one of the prompts");
 	}
 	else {
-		var url_string = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+address1+"&destinations="+address2+"&mode="+mode+"&key=AIzaSyCI7fCvGW2y8fVb8SzohlAzFAhDZ0eJGsI";
+		var url_string = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+address1+"&destinations="+address2+"&mode="+mode+"&key=" + google_maps_api_key_token;
 	}
 
 	var data = httpGet(url_string);
@@ -191,7 +194,7 @@ function get_bike_time(address1,address2){
 		alert("User cancelled one of the prompts");
 	}
 	else {
-		var url_string = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+address1+"&destinations="+address2+"&mode="+mode+"&key=AIzaSyCI7fCvGW2y8fVb8SzohlAzFAhDZ0eJGsI";
+		var url_string = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+address1+"&destinations="+address2+"&mode="+mode+"&key=" + google_maps_api_key_token;
 	}
 
 	var data = httpGet(url_string);
@@ -218,7 +221,7 @@ function get_subway_time(address1,address2){
 		alert("User cancelled one of the prompts");
 	}
 	else {
-		var url_string = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+address1+"&destinations="+address2+"&mode="+mode+"&key=AIzaSyCI7fCvGW2y8fVb8SzohlAzFAhDZ0eJGsI";
+		var url_string = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+address1+"&destinations="+address2+"&mode="+mode+"&key=" + google_maps_api_key_token;
 	}
 
 	var data = httpGet(url_string);
@@ -386,27 +389,3 @@ function get_best_path(address_1,address_2){
 	return output;
 
 }
-
-// var address1 = prompt("Enter the address:", "Grand Central Station");
-// var address2 = prompt("Enter the address:", "Hotel Chantelle");
-
-// if (address1 == null || address1 == "" || address2 == null || address2 == "") {
-// 	alert("User cancelled the prompt");
-// }
-
-// else {
-// 	response = get_best_path(address1,address2);
-// }
-
-
-// var xmlHttp = new XMLHttpRequest();
-// xmlHttp.open( "GET", url_string, false ); // false for synchronous request
-// xmlHttp.send( null );
-// var data1 = station_id;
-// var data2 = walking_time;
-
-// alert(response[0]);
-// alert(response[1]);
-// alert(response[2]);
-
-

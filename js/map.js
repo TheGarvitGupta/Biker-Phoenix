@@ -1,4 +1,4 @@
-
+google_maps_api_key_token = "AIzaSyAsOvnXbc6F6UCVp8gbUNArKyr9TQB3GuA";
 // the information of different markers routes = [A,B,mode] 
 // the route at most walk -> bike -> walk -> sub -> walk -> bike -> walk
 // example mode should be WALKING1, WALKING2, WALKING3, BIKING1 etc...
@@ -263,7 +263,7 @@ function address_to_coord(address) {
 		alert("Address invalid");
 	}
 	else {
-		var url_string = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=AIzaSyD0y1Q1FGLwHEkqjPHrNeodwGCf3VRZYlA";
+		var url_string = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + google_maps_api_key_token;
 	}
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.open( "GET", url_string, false ); // false for synchronous request
