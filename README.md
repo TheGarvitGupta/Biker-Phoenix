@@ -24,7 +24,7 @@ npm start
 
 The application should start on [localhost:5000](http://localhost:5000/).
 
-## Team Members
+## [Contributions](https://github.com/TheGarvitGupta/Biker-Phoenix/graphs/contributors)
 
 [Garvit Gupta](https://github.com/TheGarvitGupta),
 [Ignacio Arranz](https://github.com/arranzignacio),
