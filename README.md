@@ -8,6 +8,13 @@ Biker Phoenix is a web-app that allows people to find routes using a combination
 
 ## Installation
 
+### Source Code
+
+```sh
+git clone https://github.com/TheGarvitGupta/Biker-Phoenix
+```
+GitHub: https://github.com/TheGarvitGupta/Biker-Phoenix
+
 ### Running Locally
 
 ```sh
