@@ -1,38 +1,58 @@
-# node-js-sample
+# Biker Phoenix
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+Final project - CIS 550: Database and Information Systems, University of Pennsylvania. Fall 2017.
 
-## Running Locally
+## Description
 
-Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
+Biker Phoenix is a web-app that allows people to find routes using a combination of bike, subway and walking. Platforms such as Google Maps assume that the user either carries their own bike or none at all. We use [Citi Bike database](https://www.citibikenyc.com/system-data) JSON and combine that with [subway stations database](https://opendata.cityofnewyork.us) of New York City and calculate the shortest distance using a combination of all three, allowing the user to rent a bike and drop it off during the journey.
+
+## Installation
+
+### Running Locally
 
 ```sh
-git clone git@github.com:heroku/node-js-sample.git # or clone your own fork
-cd node-js-sample
-npm install
+npm install express sqlite mongo
 npm start
 ```
 
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+The application should start on [localhost:5000](http://localhost:5000/).
 
-## Deploying to Heroku
+## Team Members
 
-```
-heroku create
-git push heroku master
-heroku open
-```
+[Garvit Gupta](https://github.com/TheGarvitGupta)
+[Ignacio Arranz](https://github.com/arranzignacio)
+[Gayatri Mavani](https://github.com/gmavani)
+[Yu-Ho Hsieh](https://github.com/HsiehYuho)
 
-Alternatively, you can deploy your own copy of the app using the web-based flow:
+## Development
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+### Front End
+* HTML5
+* CSS3
+* AngularJS
 
-## Documentation
+### Back End
+* Node.js
+* Express
+* MongoDB
+* SQL
 
-For more information about using Node.js on Heroku, see these Dev Center articles:
+### APIs
+* Facebook Login
+* Google Maps (Plotting)
+* Google Maps (Geo-encoding)
 
-- [10 Habits of a Happy Node Hacker](https://blog.heroku.com/archives/2014/3/11/node-habits)
-- [Getting Started with Node.js on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
+### Web Hosting
+* AWS RDS (SQL Database only)
+
+## Screenshots
+
+![Home - Log in with Facebook or as a guest](https://raw.githubusercontent.com/TheGarvitGupta/CIS550/master/Screenshots/Screen%20Shot%202018-06-16%20at%2010.28.49%20PM.png?token=AJuzDKXb7wrXmg0OE--MGo61lUYwnE9Vks5bL0VawA%3D%3D)
+
+![Directions - Point to point route with the mode of transport, distance and time](https://raw.githubusercontent.com/TheGarvitGupta/CIS550/master/Screenshots/Screen%20Shot%202018-06-16%20at%2010.34.00%20PM.png?token=AJuzDMlz2bq8nBqCzHZd2OePIz8daI3Vks5bL0VjwA%3D%3D)
+
+![Map - Route plotted on the map, with different colours to indicate the mode of transport](https://raw.githubusercontent.com/TheGarvitGupta/CIS550/master/Screenshots/Screen%20Shot%202018-06-16%20at%2010.34.39%20PM.png?token=AJuzDKMaKwNg7r_2DdNJ5lU1JFDMOqKnks5bL0VlwA%3D%3D)
+
+![Subway statiosn - Search through the database](https://raw.githubusercontent.com/TheGarvitGupta/CIS550/master/Screenshots/Screen%20Shot%202018-06-16%20at%2010.35.24%20PM.png?token=AJuzDAkmlfs4hvAAdOKPomb_5kl8NeNNks5bL0VowA%3D%3D)
+
+A demo video can be found [here](https://youtu.be/ILKdKZQTTY0), thanks to [Yu-Ho]!(https://github.com/HsiehYuho)
